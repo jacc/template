@@ -1,3 +1,3 @@
-# lighthouse
+# Discord bot template repo
 
-A project by Harbor.
+docs coming soon, figure it out for now x
