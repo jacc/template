@@ -1,29 +1,31 @@
 import {
+  ApplicationCommandType,
   ChatInputApplicationCommandData,
   CommandInteraction,
-  ContextMenuInteraction, Interaction,
+  Interaction,
   MessageApplicationCommandData,
+  MessageContextMenuCommandInteraction,
   UserApplicationCommandData,
+  UserContextMenuCommandInteraction
 } from "discord.js";
 
-import type {ApplicationCommandTypes} from "discord.js/typings/enums";
 
 export interface ChatCommand extends ChatInputApplicationCommandData {
   inhibitors: Inhibitor[] | Inhibitor;
-  type: ApplicationCommandTypes.CHAT_INPUT | "CHAT_INPUT";
+  type: ApplicationCommandType.ChatInput;
   run(interaction: CommandInteraction): Promise<void>;
 }
 
 export interface MessageCommand extends MessageApplicationCommandData {
   inhibitors: Inhibitor[] | Inhibitor;
-  type: ApplicationCommandTypes.MESSAGE | "MESSAGE";
-  run(interaction: ContextMenuInteraction): Promise<void>;
+  type: ApplicationCommandType.Message;
+  run(interaction: MessageContextMenuCommandInteraction): Promise<void>;
 }
 
 export interface UserCommand extends UserApplicationCommandData {
   inhibitors: Inhibitor[] | Inhibitor;
-  type: ApplicationCommandTypes.USER | "USER";
-  run(interaction: ContextMenuInteraction): Promise<void>;
+  type: ApplicationCommandType.User;
+  run(interaction: UserContextMenuCommandInteraction): Promise<void>;
 }
 
 export type Inhibitor = (interaction: Interaction) => Promise<void> | void;

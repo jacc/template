@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { Client, Intents } from "discord.js";
+import { Client, ActivityType } from "discord.js";
 import {
   chatCommandsMap,
   messageCommandsMap,
@@ -11,11 +11,9 @@ import { redis } from "./services/redis";
 import { isDev } from "./constants";
 import { handleInteraction } from "./services/events/interaction";
 import signale from "signale";
-const myIntents = new Intents();
 
 const client = new Client({
-  intents: myIntents,
-  allowedMentions: { parse: ["users", "roles"], repliedUser: false },
+  intents: ["Guilds", "GuildMessages", "MessageContent", "GuildMembers", "GuildPresences"],
 });
 
 client.on("ready", async () => {
@@ -26,7 +24,7 @@ client.on("ready", async () => {
     status: "online",
     activities: [
       {
-        type: "WATCHING",
+        type: ActivityType.Watching,
         name: `github.com/jacc`,
       },
     ],
@@ -36,14 +34,6 @@ client.on("ready", async () => {
     if (!process.env.DEVELOPMENT_ID) {
       throw new Error("DEVELOPMENT_ID is not set, exiting...");
     }
-
-    await client.guilds.cache
-      .get(process.env.DEVELOPMENT_ID)
-      ?.commands.set([
-        ...chatCommandsMap.values(),
-        ...messageCommandsMap.values(),
-        ...userCommandsMap.values(),
-      ]);
 
     await client.guilds.cache
       .get(process.env.DEVELOPMENT_ID)
